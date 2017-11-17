@@ -1,0 +1,1108 @@
+---
+title: "Leaflet"
+---
+
+[Leaflet](http://leafletjs.com/) is an open-source JavaScript library
+for mobile-friendly interactive maps. We can make interactive panning/zooming and overlay object on maps:
+
+- Map tiles.
+- Markers (with custom icons).
+- Polygons.
+- Lines.
+- Popups.
+- GeoJSON.
+- Choropleth maps.
+- Non-geographical maps.
+- WMS and TMS (weather and time measurement systems).
+- Map panes.
+- Videos.
+
+We can embed maps in R Markdown documents and Shiny apps. We can embed maps into websites.
+
+We can render spatial objects from the sp or sf packages, or data frames with latitude/longitude columns.
+
+With `leftlet` grammar, we can build a set of overlays with the `magrittr` pipe operator (`%>%`).
+
+Consult the documentation and the [website](http://leafletjs.com/) for the specifics.
+
+Let's build the first map and limit the zoom in.
+
+**Montréal, Jacques-Cartier**
+
+![](img/jcb2.jpg){ width=4in }
+
+```{r}
+library(leaflet)
+
+m <- leaflet(options = leafletOptions(minZoom = 0, maxZoom = 13)) %>%
+  addTiles() %>%  # add default OpenStreetMap map tiles
+  addMarkers(lng=-73.546428, lat=45.522660, 
+             popup="Montréal, Jacques-Cartier",
+             label = "lng=-73.546428, lat=45.522660")
+
+m  # print the map
+```
+<br>
+Here is the equivalent without using pipes. We limit the zoom out.
+
+```{r}
+library(leaflet)
+
+m <- leaflet(options = leafletOptions(minZoom = 10, maxZoom = 18))
+m <- addTiles(m)
+m <- addMarkers(m, lng=-73.546428, lat=45.522660,
+                popup="Montréal, Jacques-Cartier",
+                label = "lng=-73.546428, lat=45.522660")
+
+m
+```
+
+## The map widget
+
+Center the view with coordinates with `setView`.
+
+```{r}
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=-73.546428, lat=45.522660,
+             popup="Montréal, Jacques-Cartier",
+             label = "lng=-73.546428, lat=45.522660") %>% 
+  setView(lng=-73.54, lat=45.52,
+          zoom = 15)
+
+m
+```
+<br>
+Frame the view with coordinates with `fitBounds`. We can clear the bounds with `clearBounds()`.
+
+```{r}
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=-73.546428, lat=45.522660,
+             popup="Montréal, Jacques-Cartier",
+             label = "lng=-73.546428, lat=45.522660") %>% 
+  fitBounds(-73, 45, -74, 46)
+
+m
+```
+<br>
+
+```{r, echo=FALSE}
+# The whole page
+# htmltools::includeHTML("m.html")
+```
+
+### Saving the map
+
+```{r, eval=FALSE}
+library(htmlwidgets)
+
+saveWidget(m, file="m.html")
+```
+
+### Loading objects
+
+We can load data from a data frame object (with lng/lat columns) or from the `map()` function. We can also load `sp` objects (`SpatialPoints[DataFrame]`, `Line/Lines`, `SpatialLines[DataFrame]`, `Polygon/Polygons`, `SpatialPolygons[DataFrame]`). Calling `addPolygons` on the map widget will know to add the polygons from that `SpatialPolygonsDataFrame`.
+
+There are 5 potential column names: `lat, latitude, lng, long, longitude`.
+
+Let's generate a map with quasi-random coordinates.
+
+```{r}
+library(leaflet)
+
+# add some circles to a map
+df = data.frame(Lat = rep(45.5, 10), Long = rnorm(10)-73)
+df
+
+leaflet(data = df) %>%
+  addTiles() %>%
+  addCircles()
+```
+<br>
+We change the names.
+
+```{r}
+library(leaflet)
+
+# add some circles to a map
+df = data.frame(latitude = rep(45.5, 10), longitude = rnorm(10)-73)
+
+leaflet(data = df) %>%
+  addTiles() %>%
+  addCircles()
+```
+
+## Using Basemaps
+
+### Default tiles
+
+Leftlet pulls rasters from OpenStreetMap by default.
+
+```{r}
+library(leaflet)
+
+m <- leaflet() %>%
+  setView(lng=-73.546428, lat=45.522660, zoom = 12)
+
+m %>% 
+  addTiles() # with no arguments; by default, OpenStreetMap 
+```
+
+### Third-party tiles
+
+Many popular (free) third-party basemaps can be added.
+
+Stamen.
+
+```{r}
+library(leaflet)
+m %>% 
+  addProviderTiles(providers$Stamen.Toner)
+```
+<br>
+```{r}
+library(leaflet)
+m %>% 
+  addProviderTiles(providers$Stamen.Watercolor)
+```
+<br>
+CartoDB.
+
+```{r}
+library(leaflet)
+m %>% 
+  addProviderTiles(providers$CartoDB.Positron)
+```
+<br>
+NatGeoWorldMap.
+
+```{r}
+library(leaflet)
+m %>% 
+  addProviderTiles(providers$Esri.NatGeoWorldMap)
+```
+<br>
+Other providers: HERE, Mapbox, Esri/ArcGIS. 
+
+Consult this [website](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) to view the complete collection. Here is an overview:
+
+```{r, echo=FALSE}
+library(leaflet)
+
+l <- leaflet() %>% setView(-70,45,7)
+
+esri <- grep("^Esri", providers, value = TRUE)
+
+for (provider in esri) {
+  l <- l %>% addProviderTiles(provider, group = provider)
+}
+
+l %>%
+  addLayersControl(baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  addMiniMap(tiles = esri[[1]], toggleDisplay = TRUE,
+    position = "bottomleft") %>%
+  htmlwidgets::onRender("
+    function(el, x) {
+      var myMap = this;
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
+        })
+    }")
+```
+
+### Custom tile URL template
+
+We can also add a weather layer with `addWMSTiles` and timezone layers.
+
+### Combining tile layers
+
+We can stack basemaps by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi-transparent tiles.
+
+```{r}
+library(leaflet)
+
+m %>% 
+  addProviderTiles(providers$Stamen.Toner)
+```
+<br>
+vs.
+
+```{r}
+library(leaflet)
+
+m %>% addProviderTiles(providers$MtbMap) %>%
+  addProviderTiles(providers$Stamen.TonerLines, options = providerTileOptions(opacity = 0.35)) %>%
+  addProviderTiles(providers$Stamen.TonerLabels)
+```
+
+## Markers
+
+### Icon markers
+
+```{r, include=FALSE, eval=FALSE}
+library(ggmap)
+
+geocode('La Ronde, Montreal')
+geocode('Parc Jean-Drapeau, Montreal')
+```
+
+```{r}
+data <- data.frame(lieu = c('Jacques-Cartier', 'La Ronde', 'Parc Jean-Drapeau'),
+                   lng = c(-73.546428, -73.53447, -73.53323),
+                   lat = c(45.522660, 45.52267, 45.5141))
+
+data
+```
+
+Point data for markers can come from a variety of sources: 
+
+- `SpatialPoints` or `SpatialPointsDataFrame` objects (`sp` package).
+- `POINT`, `sfc_POINT`, and `sf` objects (`sf` package); only `X` and `Y` dimensions.
+- Data frames with latitude and logitude columns, `addMarkers(lng = ~Longitude, lat = ~Latitude))`; let the function look for columns named `lat, latitude` and `lon, lng, long, longitude`.
+
+```{r}
+library(leaflet)
+
+leaflet(data) %>%
+  addTiles() %>%
+  addMarkers(~lng, ~lat,
+             popup = ~as.character(lieu),
+             label = ~as.character(lieu))
+```
+
+### Customizing marker icons
+
+We can customize the markers. We can also use .jpg and .png files as symbols. 
+
+```{r}
+library(leaflet)
+
+redLeafIcon <- makeIcon(
+  iconUrl = "http://leafletjs.com/examples/custom-icons/leaf-red.png",
+  iconWidth = 38, iconHeight = 95,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+  shadowWidth = 50, shadowHeight = 64,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+leaflet(data) %>%
+  addTiles() %>%
+  addMarkers(~lng, ~lat,
+             popup = ~as.character(lieu),
+             label = ~as.character(lieu),
+             icon = redLeafIcon)
+```
+
+### Conditional markers
+
+We can add conditions (if, else if, else) to change the markers. Conditions are based on vectors in the data frame.
+
+### Marker clusters
+
+When there are a large number of markers on a map, you can cluster them using the `clusterOptions = markerClusterOptions()`. For example, `markerClusterOptions(freezeAtZoom = 5)` will freeze the cluster at zoom level 5 regardless of the user’s actual zoom level. We can see an example [further down](#showhide-layers), in the **With marker clusters** section.
+
+### Circle markers
+
+We can add circle markers. They can be empty circles or plain bubbles.
+
+```{r}
+library(leaflet)
+
+leaflet(data) %>%
+  addTiles() %>%
+  addCircleMarkers(~lng, ~lat,
+                   popup = ~as.character(lieu),
+                   label = ~as.character(lieu),
+                   radius = 16,
+                   color = 'blue',
+                   stroke = TRUE,
+                   fillOpacity = 0.3)
+```
+<br>
+The `radius`, `color`, `stroke` and `fillOpacity` (and many more options) can be set by the data frame. We can add conditions (if, else if, else) as well.
+
+## Popups and labels
+
+We can write addresses, add comments, links, etc.
+
+```{r}
+library(leaflet)
+
+content <- paste(sep = "<br/>",
+  "<b><a href='https://en.wikipedia.org/wiki/Jacques_Cartier_Bridge'>Jacques-Cartier</a></b>",
+  "from Montreal Island, Montreal, Quebec,",
+  "to the south shore at Longueuil, Quebec, Canada,",
+  "crosses Île Sainte-Hélène,",
+  "access to the Parc Jean-Drapeau and La Ronde amusement park"
+)
+
+leaflet() %>% 
+  addTiles() %>%
+  addPopups(lng=-73.546428, lat=45.522660,
+            content,
+            options = popupOptions(closeButton = TRUE)
+  )
+```
+<br>
+A label is a textual or HTML content that can be attached to markers to be displayed on mouse over. Unlike popups you don’t need to click a marker for the label to be shown.
+
+`htmlEscape` can be used to sanitize any characters in the name that might be interpreted as HTML; doing so is important in any situation where the data may come from a file or database, or from the user.
+
+```{r}
+library(leaflet)
+library(htmltools)
+
+leaflet(data) %>%
+  addTiles() %>%
+  addMarkers(~lng, ~lat,
+             popup = ~htmlEscape(lieu),
+             label = ~htmlEscape(lieu))
+```
+<br>
+
+We can customize marker labels using the `labelOptions` argument of the `addMarkers` function.
+
+## Lines and Shapes
+
+Line and polygon data can come from a variety of sources:
+
+- `SpatialPolygons`, `SpatialPolygonsDataFrame`, `Polygons`, and `Polygon` objects (`sp` package)
+- `SpatialLines`, `SpatialLinesDataFrame`, `Lines`, and `Line` objects (`sp` package)
+- `MULTIPOLYGON`, `POLYGON`, `MULTILINESTRING`, and `LINESTRING` objects (`sf` package)
+- `map` objects (`maps` package; use `map(fill = TRUE)` for polygons, `FALSE` for polylines.
+
+We can load shapefiles with the `rgdal`, `maptools` or `PBSmapping` packages.
+
+Let's load a `SpatialPolygonsDataFrame`: the distribution of sugar maple  species (acer saccharum).
+
+```{r}
+library(rgdal)
+
+acersacr <- readOGR('/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/maple/acersacr.shp', GDAL1_integer64_policy = TRUE)
+```
+
+When the shapefile has layers, we can specify which one with: `layer = "cb_2013_us_state_20m"` for example. We can them subset the shapefile with `neStates <- subset(states, states$STUSPS %in% c("CT","ME","MA","NH","RI","VT","NY","NJ","PA"))`.
+
+```{r}
+library(leaflet)
+
+leaflet(acersacr) %>%
+  addTiles() %>%
+  addPolygons(color = "gray",
+              weight = 1,
+              smoothFactor = 0.5,
+              opacity = 1.0,
+              fillOpacity = 0.5,
+              fillColor = "darkgreen",
+              highlightOptions = highlightOptions(color = "white", weight = 2, bringToFront = TRUE))
+```
+<br>
+
+We can simplify complex polygons/polylines (reduce the size or number of bytes) with the `rmapshaper` package.
+
+### Circles
+
+We can set the size of circle markers.
+
+```{r}
+data2 <- data.frame(lieu = c('Jacques-Cartier', 'La Ronde', 'Parc Jean-Drapeau'),
+                   lng = c(-73.546428, -73.53447, -73.53323),
+                   lat = c(45.522660, 45.52267, 45.5141),
+                   priority = c(2, 2, 3))
+
+data2
+```
+
+```{r}
+library(leaflet)
+
+leaflet(data2) %>% 
+  addTiles() %>%
+  addCircles(lng = ~lng, lat = ~lat,
+             weight = 1,
+             radius = ~(priority*2)**3,
+             popup = ~as.character(lieu),
+             label = ~as.character(priority),
+             color = 'blue',
+             stroke = TRUE,
+             fillOpacity = 0.3)
+```
+<br>
+```{r}
+cities <- read.csv(textConnection("
+City,Lat,Long,Pop
+Boston,42.3601,-71.0589,645966
+Hartford,41.7627,-72.6743,125017
+New York City,40.7127,-74.0059,8406000
+Philadelphia,39.9500,-75.1667,1553000
+Pittsburgh,40.4397,-79.9764,305841
+Providence,41.8236,-71.4222,177994
+"))
+
+library(leaflet)
+
+leaflet(cities) %>% addTiles() %>%
+  addCircles(lng = ~Long, lat = ~Lat,
+             weight = 1,
+             radius = ~sqrt(Pop) * 30,
+             popup = ~City
+  )
+```
+
+### Rectangles
+
+We need 4 values.
+
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  setView(lng=-73.546428, lat=45.522660, zoom = 12) %>%
+  addTiles() %>%
+  addRectangles(
+    lng1=-73.5, lat1=45.5,
+    lng2=-73.55, lat2=45.54,
+    fillColor = "transparent")
+```
+
+## Working with GeoJSON & TopoJSON
+
+### Reading as `sp` objects or vector files
+
+We can pull the files from http://eric.clst.org/Stuff/USGeoJSON and
+https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents.
+
+- The first approach is to use the `geojsonio` package to `geojson_read` GeoJSON/TopoJSON as `sp` objects.
+    - `geojsonio::geojson_read("json/nycounties.geojson", what = "sp")`.
+- The second approach is to use the `rgdal` package to `readOGR` GeoJSON/TopoJSON as `OGRGeoJSON` objects.
+    - `readOGR("json/nycounties.geojson", "OGRGeoJSON")`.
+
+Let's run an example to show the size per county in the state of NY. The larger the county, the paler the colour.
+
+```{r}
+library(rgdal)
+
+xy <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/gz_2010_us_050_00_500k.json")
+names(xy)
+head(xy@data)
+
+# NY state should be number 36
+nyc <- xy[xy$STATE == 36, ]
+head(nyc@data)
+
+pal <- colorNumeric("viridis", NULL)
+
+library(leaflet)
+
+leaflet(nyc) %>%
+  addTiles() %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1,
+    fillColor = ~pal(log10(CENSUSAREA)),
+    label = ~paste0(NAME, ": ", formatC(CENSUSAREA, big.mark = ","))) %>%
+  addLegend(pal = pal,
+            values = ~log10(CENSUSAREA),
+            opacity = 1.0,
+            labFormat = labelFormat(transform = function(x) round(10^x)))
+```
+<br>
+We can [download more vector files]( https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html).
+
+### Working with raw GeoJSON/TopoJSON
+
+The `addGeoJSON()` and `addTopoJSON()` functions accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.
+
+You can modify the style of GeoJSON/TopoJSON features.
+
+## Raster images
+
+Two-dimensional `RasterLayer` objects (using the `raster` package) can be turned into images and added to Leaflet maps using the `addRasterImage` function.
+
+## Using Leaflet with Shiny
+
+[Shiny](http://shiny.rstudio.com/) makes it easy to build interactive web apps. You can host standalone apps on a webpage (Shinyapps.io vs on-premises), embed them into R Markdown documents or build dashboards.
+
+```{r, eval=FALSE, include=FALSE}
+library(shiny)
+library(leaflet)
+library(RColorBrewer)
+
+ui <- bootstrapPage(
+  tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
+  leafletOutput("map", width = "100%", height = "100%"),
+  absolutePanel(top = 10, right = 10,
+    sliderInput("range", "Magnitudes",
+                min(quakes$mag),
+                max(quakes$mag),
+                value = range(quakes$mag),
+                step = 0.1
+    ),
+    selectInput("colors", "Color Scheme",
+      rownames(subset(brewer.pal.info,
+                      category %in% c("seq", "div")))
+    ),
+    checkboxInput("legend", "Show legend", TRUE)
+  )
+)
+
+server <- function(input, output, session) {
+
+  # Reactive expression for the data subsetted to what the user selected
+  filteredData <- reactive({
+    quakes[quakes$mag >= input$range[1] & quakes$mag <= input$range[2],]
+  })
+
+  # This reactive expression represents the palette function,
+  # which changes as the user makes selections in UI.
+  colorpal <- reactive({
+    colorNumeric(input$colors, quakes$mag)
+  })
+
+  output$map <- renderLeaflet({
+    # Use leaflet() here, and only include aspects of the map that
+    # won't need to change dynamically (at least, not unless the
+    # entire map is being torn down and recreated).
+    leaflet(quakes) %>% addTiles() %>%
+      fitBounds(~min(long),
+                ~min(lat),
+                ~max(long),
+                ~max(lat))
+  })
+
+  # Incremental changes to the map (in this case, replacing the
+  # circles when a new color is chosen) should be performed in
+  # an observer. Each independent set of things that can change
+  # should be managed in its own observer.
+  observe({
+    pal <- colorpal()
+
+    leafletProxy("map", data = filteredData()) %>%
+      clearShapes() %>%
+      addCircles(radius = ~10^mag/10,
+                 weight = 1,
+                 color = "#777777",
+        fillColor = ~pal(mag),
+        fillOpacity = 0.7,
+        popup = ~paste(mag)
+      )
+  })
+
+  # Use a separate observer to recreate the legend as needed.
+  observe({
+    proxy <- leafletProxy("map", data = quakes)
+
+    # Remove any existing legend, and only if the legend is
+    # enabled, create a new one.
+    proxy %>% clearControls()
+    if (input$legend) {
+      pal <- colorpal()
+      proxy %>% addLegend(position = "bottomright",
+                          pal = pal,
+                          values = ~mag
+      )
+    }
+  })
+}
+
+shinyApp(ui, server)
+```
+
+## Colors
+
+The `palette` argument specifies the colors to map the data:
+
+- Preset palettes from the `RColorBrewer` package, e.g. `"RdYlBu"`, `"Accent"` or `"Greens"`.
+- `viridis` palette: `"viridis"`, `"magma"`, `"inferno"`, or `"plasma"`.
+- Character vector of RGB or named colors: `palette(c("#000000", "#0000FF", "#FFFFFF")`, `palette(topo.colors(10))`.
+- Function that receives a single value between 0 and 1 and returns a color: `colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")`.
+
+### Discrete inputs, discrete colours
+
+```{r}
+pal <- colorNumeric(c("red", "green", "blue"), 1:10)
+# Pass the palette function a data vector to get the corresponding colors
+
+pal(c(1,6,9))
+```
+
+### Continuous inputs, continuous colours (`colorNumeric`)
+
+`domain` indicates the set of input values that we are mapping to these colors. For `colorNumeric`, we can provide either a min/max (below), or a set of numbers that `colorNumeric` can call `range()` on.
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+library(leaflet)
+
+pal <- colorNumeric(palette = "Blues", domain = countries$gdp_md_est)
+```
+<br>
+We could have used `c("white", "navy")` or `c("#FFFFFF", "#000080")` for a similar effect. 
+
+Let's apply the continuous palette.
+
+```{r}
+library(leaflet)
+
+map <- leaflet(countries, options = leafletOptions(minZoom = 1))
+
+map %>%
+  addPolygons(stroke = FALSE,
+              smoothFactor = 0.2,
+              fillOpacity = 1,
+              color = ~pal(gdp_md_est))
+```
+
+### Continuous input, discrete colors (`colorBin` and `colorQuantile`)
+
+`colorBin` maps numeric input data to a fixed number of output colors using binning (slicing the input domain up by value).
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+library(leaflet)
+
+binpal <- colorBin("Blues", countries$gdp_md_est, 6, pretty = FALSE)
+
+map %>%
+  addPolygons(stroke = FALSE,
+              smoothFactor = 0.2,
+              fillOpacity = 1,
+              color = ~binpal(gdp_md_est))
+```
+<br>
+
+`colorQuantile` maps numeric input data to a fixed number of output colors using quantiles (slicing the input domain into subsets with equal numbers of observations).
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+qpal <- colorQuantile("Blues", countries$gdp_md_est, n = 7)
+
+library(leaflet)
+
+map %>%
+  addPolygons(stroke = FALSE,
+              smoothFactor = 0.2,
+              fillOpacity = 1,
+              color = ~qpal(gdp_md_est))
+```
+
+### Categorical input (`colorFactor`)
+
+If the palette contains the same number of elements as there are factor levels, then the mapping will be 1:1; otherwise, the palette will be interpolated to produce the desired number of colors.
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+# Make up some 5 random levels
+countries$category <- factor(sample.int(5L, nrow(countries), TRUE))
+
+library(leaflet)
+
+factpal <- colorFactor(topo.colors(5), countries$category)
+
+leaflet(countries, options = leafletOptions(minZoom = 1)) %>%
+  addPolygons(stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~factpal(category))
+```
+
+## Legend
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+library(leaflet)
+
+map <- leaflet(countries, options = leafletOptions(minZoom = 1)) %>% 
+  addTiles()
+
+map
+```
+<br>
+Use the `addLegend` function to add a legend.
+
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+# Continuous input, continuous colours
+pal <- colorNumeric(
+  palette = "YlGnBu",
+  domain = countries$gdp_md_est
+)
+
+library(leaflet)
+
+map %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1, color = ~pal(gdp_md_est)
+  ) %>%
+  addLegend("bottomright", 
+            pal = pal, 
+            values = ~gdp_md_est,
+            title = "Est. GDP (2010)",
+            labFormat = labelFormat(prefix = "$"),
+            opacity = 1
+  )
+```
+<br>
+```{r}
+library(rgdal)
+
+countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+
+# Continuous input, discrete colors
+qpal <- colorQuantile("RdYlBu", countries$gdp_md_est, n = 5)
+
+library(leaflet)
+
+map %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1, color = ~qpal(gdp_md_est)
+  ) %>%
+  addLegend("bottomright",
+            pal = qpal,
+            values = ~gdp_md_est,
+            opacity = 1)
+```
+
+## Show/Hide Layers
+
+We can allow users to decide what layers to show and hide, or programmatically control the visibility of layers using server-side code in Shiny.
+
+### Understanding groups
+
+The fundamental unit of showing/hiding is the group. Many layers can belong to the same group. But each layer can only belong to zero or one groups (you can’t assign a layer to two groups). Consult the doc for an explanation about groups and layers.
+
+```{r, include=FALSE}
+data3 <- data.frame(lieu = c('Lac des Dauphins', 'Lac des Cygnes'),
+                   lng = c(-73.53663, -73.53439),
+                   lat = c(45.52479, 45.50871),
+                   priority = c(2,2))
+
+data3
+```
+
+We create two groups: A and B. We can display several Circles or Markers differentiated by groups.
+
+```{r}
+library(leaflet)
+
+leaflet(data3) %>% 
+  addTiles() %>%
+  addCircles(data = data2,
+             group = "A",
+             lng = ~lng, lat = ~lat,
+             weight = 1,
+             radius = ~(priority*2)**3,
+             popup = ~as.character(lieu),
+             label = ~as.character(priority),
+             color = 'blue',
+             stroke = TRUE,
+             fillOpacity = 0.3) %>%
+  addCircles(data = data3,
+             group = "B",
+             lng = ~lng, lat = ~lat,
+             weight = 1,
+             radius = ~(priority*2)**3,
+             popup = ~as.character(lieu),
+             label = ~as.character(priority),
+             color = 'red',
+             stroke = TRUE,
+             fillOpacity = 0.3)
+```
+
+### Interactive layer display
+
+```{r}
+library(leaflet)
+
+outline <- quakes[chull(quakes$long, quakes$lat),]
+
+map <- leaflet(quakes) %>%
+  # Base groups
+  addTiles(group = "OSM (default)") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
+  # Overlay groups
+  addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = "Quakes") %>%
+  addPolygons(data = outline, lng = ~long, lat = ~lat,
+    fill = F, weight = 2, color = "#FFFFCC", group = "Outline") %>%
+  # Layers control
+  addLayersControl(
+    baseGroups = c("OSM (default)", "Toner", "Toner Lite"),
+    overlayGroups = c("Quakes", "Outline"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+map
+```
+
+### Programmatic layer display
+
+We can use the `showGroup` and `hideGroup` functions.
+
+```{r}
+library(leaflet)
+
+map %>% 
+  hideGroup("Outline")
+```
+
+### With marker clusters
+
+```{r}
+library(leaflet)
+
+quakes <- quakes %>%
+  dplyr::mutate(mag.level = cut(mag,c(3,4,5,6),
+                                labels = c('>3 & <=4', '>4 & <=5', '>5 & <=6')))
+
+quakes.df <- split(quakes, quakes$mag.level)
+
+l <- leaflet() %>% addTiles()
+
+names(quakes.df) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=quakes.df[[df]],
+                          lng=~long, lat=~lat,
+                          label=~as.character(mag),
+                          popup=~as.character(mag),
+                          group = df,
+                          clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                          labelOptions = labelOptions(noHide = F,
+                                                       direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(
+    overlayGroups = names(quakes.df),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
+
+## Choropleths
+
+### Basic county map
+
+Plain.
+
+```{r}
+library(leaflet)
+
+leaflet(nyc) %>%
+  addTiles() %>%
+  addPolygons(stroke = TRUE,
+              weight = 2,
+              color = 'snow',
+              opacity = 0.2,
+              smoothFactor = 0.3,
+              fillOpacity = 0.3,
+              fillColor = 'blue',
+              label = ~paste0(NAME, ": ", formatC(CENSUSAREA, big.mark = ",")))
+```
+<br>
+Factored.
+
+```{r}
+library(leaflet)
+
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+#pal <- colorBin("YlOrRd", domain = nyc$CENSUSAREA, bins = bins)
+pal <- colorNumeric("viridis", NULL)
+
+leaflet(nyc) %>%
+  addTiles() %>%
+  addPolygons(stroke = TRUE,
+              weight = 2,
+              color = 'snow',
+              opacity = 0.7,
+              dashArray = "3",
+              smoothFactor = 0.3,
+              fillOpacity = 0.7,
+              fillColor = ~pal(log10(CENSUSAREA)),
+              label = ~paste0(NAME, ": ", formatC(CENSUSAREA, big.mark = ",")),
+              highlight = highlightOptions(weight = 3,
+                                           color = "gray",
+                                           dashArray = "",
+                                           fillOpacity = 0.7,
+                                           bringToFront = TRUE)) %>%
+  addLegend(pal = pal,
+            values = ~log10(CENSUSAREA),
+            opacity = 0.7,
+            title = "Size",
+            position = "bottomleft",
+            labFormat = labelFormat(transform = function(x) round(10^x)))
+```
+
+We can even customize the labels with `labelOptions`.
+
+## Projections
+
+The `leaflet` package expects all point, line, and shape data to be specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). The same goes for tiles, markers, and circles under and over the map.
+
+By default, when displaying this data it projects everything to EPSG:3857 and expects that any map tiles are also displayed in [EPSG:3857](http://epsg.io/3857).
+
+We can display data with a different projection with the Proj4Leaflet plugin, which in theory gives Leaflet access to any CRS that is supported by Proj4js. Consult the doc.
+
+Other projections:
+
+- EPSG:2163 (US National Atlas Equal Area projection)
+- ESRI:102003.
+- EPSG:3006.
+- `addRasterImage` currently works only with EPSG:3857 Web Mercator.
+- It’s possible to use polar projections.
+
+## Additional stuff
+
+We can add widgets to maps.
+
+### Measure
+
+We add a 'measuring tape'.
+
+```{r}
+library(leaflet)
+
+leaflet(data) %>%
+  addTiles() %>%
+  addMarkers(~lng, ~lat,
+             popup = ~as.character(lieu),
+             label = ~as.character(lieu)) %>%
+  addMeasure(position = "bottomleft",
+             primaryLengthUnit = "meters",
+             primaryAreaUnit = "sqmeters",
+             activeColor = "#3D535D",
+             completedColor = "#7D4479")
+```
+
+### Graticule
+
+We add a grid. The `interval` is the gap between each graticule line: 'every x degrees'.
+
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(0,0,2) %>%
+  addGraticule(interval = 10,
+               style = list(color = "#FF0000", weight = 1))
+```
+<br>
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(0,0,2) %>%
+  addGraticule(group = "Graticule",
+               interval = 10,
+               style = list(color = "#FF0000", weight = 1)) %>%
+  addLayersControl(overlayGroups = c("Graticule"),
+    options = layersControlOptions(collapsed = FALSE))
+```
+
+### Terminator
+
+We can add a day/night indicator.
+
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  addTerminator(resolution=10,
+    time = "2017-10-02T21:00:00Z",
+    group = "daylight") %>%
+  addLayersControl(
+    overlayGroups = "daylight",
+    options = layersControlOptions(collapsed = FALSE))
+```
+
+### Minimap
+
+We can add a browsing widget.
+
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(-75,45,4) %>%
+  addProviderTiles(providers$Esri.WorldStreetMap) %>%
+  addMiniMap()
+```
+
+### EasyButton
+
+We can add a geolocalization widget.
+
+```{r}
+library(htmltools)
+library(htmlwidgets)
+library(leaflet)
+
+leaflet() %>% 
+  addTiles() %>%
+  addEasyButton(easyButton(icon="fa-globe",
+                           title="Zoom to Level 1",
+                           onClick=JS("function(btn, map){ map.setZoom(1); }"))) %>%
+  addEasyButton(easyButton(icon="fa-crosshairs",
+                           title="Locate Me",
+                           onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+```
+
+And more buttons to freeze/unfreeze markers.
+
+### `htmlwidget::onRender`
+
+The `htmlwidget::onRender` function can be used to add custom behavior to the leaflet map using native Javascript.
+
+```{r}
+library(leaflet)
+
+l <- leaflet() %>% setView(-70,45,7)
+
+esri <- grep("^Esri", providers, value = TRUE)
+
+for (provider in esri) {
+  l <- l %>% addProviderTiles(provider, group = provider)
+}
+
+l %>%
+  addLayersControl(baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  addMiniMap(tiles = esri[[1]], toggleDisplay = TRUE,
+    position = "bottomleft") %>%
+  htmlwidgets::onRender("
+    function(el, x) {
+      var myMap = this;
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
+        })
+    }")
+```
+
+---

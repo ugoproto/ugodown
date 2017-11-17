@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Shiny</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<head>
+<link rel="shortcut icon" href="favicon.ico" />
+</head>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#section-TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#section-TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#section-TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="section-TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ugodown</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="googleVis.html">googleVis</a>
+    </li>
+    <li>
+      <a href="python.html">Python</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    htmlwidgets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="leaflet.html">Leaflet</a>
+    </li>
+    <li>
+      <a href="static_maps.html">Static &amp; interactive maps</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="dygraphs.html">dygraphs</a>
+    </li>
+    <li>
+      <a href="plotly.html">plotly</a>
+    </li>
+    <li>
+      <a href="rbokeh.html">rbokeh</a>
+    </li>
+    <li>
+      <a href="highcharters.html">Highcharters</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="datatables.html">DataTables</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="ggedit.html">ggedit</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Shiny
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="shiny.html">Shiny</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">The Sugar Maple</li>
+    <li class="dropdown-header">Public Health</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Flexdashboard
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="flexdashboard.html">Flexdashboard</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Board 1</li>
+    <li class="dropdown-header">Board 2</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Themes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ugoproto/ugodown">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">Shiny</h1>
+
+</div>
+
+
+<p>IN DEV</p>
+<div id="section-the-shiny-package" class="section level1">
+<h1>The <code>shiny</code> package</h1>
+<p>The <a href="http://shiny.rstudio.com/">package</a> provides a web framework for building web applications and turn analyses into interactive web applications.</p>
+<p>We can develop Shiny applications in <a href="https://www.rstudio.com/products/shiny/">RStudio</a> and deploy these applications online with Shiny Server, Shiny Server Pro or Shinyapps.io.</p>
+</div>
+<div id="section-packages-and-htmlwidgets" class="section level1">
+<h1>Packages and htmlwidgets</h1>
+<p>The following packages and widgets are interactive:</p>
+<ul>
+<li><code>ggvis</code> (similar to <code>ggplot2</code>) for charts and some maps.</li>
+<li>Highcharters for charts and maps.</li>
+<li>dygraphs for time series charts.</li>
+<li>rbokeh for charts and maps.</li>
+<li>Leaflet for maps.</li>
+</ul>
+<p>Of course, other visualization packages work with Shiny.</p>
+</div>
+<div id="section-how-to" class="section level1">
+<h1>How-to</h1>
+<p>We can either make a package interactive (using <code>ggvis</code> function for example) or add more interactivity to an htmlwidget (<code>dygraphs</code> for example).</p>
+<ul>
+<li>The <code>dygraphs</code> <a href="http://rstudio.github.io/dygraphs/shiny.html">package</a>.</li>
+<li>The <code>plotly</code> <a href="https://plot.ly/r/shiny-gallery/">package</a>.</li>
+<li>The <code>rbokeh</code> package?</li>
+<li>The <code>highcharter</code> <a href="http://jkunst.com/highcharter/shiny.html">package</a>.</li>
+<li>The <code>datatables</code> <a href="http://rstudio.github.io/DT/shiny.html">package</a>.</li>
+<li>The <code>ggedit</code> package; [blog article 1]](<a href="https://www.r-bloggers.com/ggedit-0-1-1-shiny-module-to-interactvely-edit-ggplots-within-shiny-applications/" class="uri">https://www.r-bloggers.com/ggedit-0-1-1-shiny-module-to-interactvely-edit-ggplots-within-shiny-applications/</a>) and <a href="http://schmidscience.com/2016/11/16/ggedit-interactive-ggplot-aesthetic-and-theme-editor-r-statistics-blog/">blog article 2</a>.</li>
+</ul>
+</div>
+<div id="section-tutorials-and-books" class="section level1">
+<h1>Tutorials and books</h1>
+<p>We start with these <a href="http://shiny.rstudio.com/tutorial/">tutorials</a>, find other video tutorials online or books.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="center"><img src="img/learning_shiny.png" width="144" /></td>
+<td align="center"><img src="img/learn_ggplot2.jpg" width="144" /></td>
+<td align="center"><img src="img/web_applications.jpg" width="144" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="section-cases-in-dev" class="section level1">
+<h1>Cases (in dev)</h1>
+<p>To do:</p>
+<ul>
+<li>The Sugar Maple.</li>
+<li>Public Health.</li>
+</ul>
+<hr />
+<p>This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately.</p>
+<p>To learn more, see <a href="http://rmarkdown.rstudio.com/authoring_shiny.html">Interactive Documents</a>.</p>
+</div>
+<div id="section-inputs-and-outputs" class="section level1">
+<h1>Inputs and Outputs</h1>
+<p>You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change. This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny <code>renderPlot</code> function. The <code>selectInput</code> and <code>sliderInput</code> functions create the input widgets used to drive the plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(shiny)
+
+<span class="kw">inputPanel</span>(
+  <span class="kw">selectInput</span>(<span class="st">&quot;n_breaks&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Number of bins:&quot;</span>,
+              <span class="dt">choices =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>, <span class="dv">50</span>), <span class="dt">selected =</span> <span class="dv">20</span>),
+  
+  <span class="kw">sliderInput</span>(<span class="st">&quot;bw_adjust&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Bandwidth adjustment:&quot;</span>,
+              <span class="dt">min =</span> <span class="fl">0.2</span>, <span class="dt">max =</span> <span class="dv">2</span>, <span class="dt">value =</span> <span class="dv">1</span>, <span class="dt">step =</span> <span class="fl">0.2</span>)
+)
+
+<span class="kw">renderPlot</span>({
+  <span class="kw">hist</span>(faithful$eruptions, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> <span class="kw">as.numeric</span>(input$n_breaks),
+       <span class="dt">xlab =</span> <span class="st">&quot;Duration (minutes)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Geyser eruption duration&quot;</span>)
+  
+  dens &lt;-<span class="st"> </span><span class="kw">density</span>(faithful$eruptions, <span class="dt">adjust =</span> input$bw_adjust)
+  <span class="kw">lines</span>(dens, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+})</code></pre></div>
+</div>
+<div id="section-embedded-application" class="section level1">
+<h1>Embedded Application</h1>
+<p>It’s also possible to embed an entire Shiny application within an R Markdown document using the <code>shinyAppDir</code> function. This example embeds a Shiny application located in another directory:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">shinyAppDir</span>(
+  <span class="kw">system.file</span>(<span class="st">&quot;examples/06_tabsets&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;shiny&quot;</span>),
+  <span class="dt">options =</span> <span class="kw">list</span>(
+    <span class="dt">width =</span> <span class="st">&quot;100%&quot;</span>, <span class="dt">height =</span> <span class="dv">550</span>
+  )
+)</code></pre></div>
+<p>Note the use of the <code>height</code> parameter to determine how much vertical space the embedded application should occupy.</p>
+<p>You can also use the <code>shinyApp</code> function to define an application inline rather than in an external directory.</p>
+<p>In all of R code chunks above the <code>echo = FALSE</code> attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components.</p>
+<hr />
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

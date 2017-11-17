@@ -1,0 +1,95 @@
+---
+title: "Python"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, comment=FALSE, calls=FALSE)
+```
+
+```{r, include=FALSE}
+setwd("/home/ugo/Documents/Rprojects/ugodown")
+```
+
+# Python in RStudio
+
+The `knitr` package can execute a variety of [language chunks](http://rmarkdown.rstudio.com/authoring_knitr_engines.html#overview):
+
+- Python, 
+- SQL, and 
+- Bash, among others.
+
+For Python, instead of `{r}`, we begin the code chunk with `{python}`.
+
+```{python}
+x = 'hello, python world!'
+print(x.split(' '))
+```
+
+Chunk options `echo` and `results` are all valid when using Python.
+
+If the Python code generates raw HTML or LaTeX, the `results='asis'` option ensures that it is passed straight into the document’s output stream.
+
+```{python, results='asis'}
+def aucarre(x):
+    print(x ** 2)
+    
+a = 3
+aucarre(a)
+```
+
+By default, the interpreter returned by `Sys.which("python")` is used to execute the code. We can use a different python interpreter with `engine.path"/Users/me/anaconda/bin/python"` option.
+
+```{python, engine.path="/home/ugo/anaconda3/bin/python3.5", eval=FALSE}
+import sys
+print(sys.version)
+```
+
+# Data exchange
+
+Exchanging data between R chunks and Python chunks (and between Python chunks) is done via the file system. 
+
+With data frames, we can use the `feather` package.
+
+`feather`[^feather] transfer a data frame created with Pandas to R for plotting with `ggplot2`:
+
+[^feather]: [A Fast On-Disk Format for Data Frames for R and Python, powered by Apache Arrow](https://blog.rstudio.com/2016/03/29/feather/).
+
+```{r, include=FALSE, eval=FALSE}
+head(mtcars, 3)
+class(mtcars)
+
+write.csv(mtcars, 'img/mtcars.csv')
+```
+
+Import the data with Python.
+
+```{python, eval=FALSE}
+import pandas
+import feather
+
+cars = pandas.read_csv("img/mtcars.csv")
+
+feather.write_dataframe(cars, "img/cars.feather")
+```
+
+Read the feather file from R and plot the data frame using `ggplot2`.
+
+```{r, include=FALSE}
+library(feather)
+
+write_feather(mtcars, 'img/cars.feather')
+```
+
+```{r}
+library(feather)
+
+mtcars2 <- read_feather("img/cars.feather")
+
+head(mtcars2, 3)
+
+library(ggplot2)
+
+ggplot(mtcars2, aes(mpg, disp)) +
+  geom_point() +
+  geom_jitter()
+```

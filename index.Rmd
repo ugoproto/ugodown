@@ -1,0 +1,58 @@
+---
+title: "ugodown"
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, comment=FALSE, calls=FALSE)
+
+setwd("/home/ugo/Documents/Rprojects/ugodown")
+```
+
+# Static website
+
+A general-purpose (static) [website built with R Markdown](http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_authoring) and the `blogdown` package.
+
+- A prototype; it could also be deployed in Bitbucket or GitLab.
+- A test bench for htmlwidgets and a framework for integrating interactive packages.
+    - It is rather cumbersome to deploy widgets in other websites. 
+    - The widgets have to generate an HTML fragments and the later are then embedded into a webpage.
+- A notebook: a vade mecum on random topics.
+
+# Deploying an R Markdown website
+
+![](img/blogdown.png){ width=0.6in align=left hspace=10px }
+We can learn the [basics](http://rmarkdown.rstudio.com/rmarkdown_websites.html#overview) of the `blogdown` package for developing web content with or without RStudio using R Markdown and publishing it in a static website for free on GitHub, Bitbucket or GitLab. Other hosting services, such as Amazon S3, are super cheap. Here is a complete [list](http://alignedleft.com/resources/cheap-web-hosting). We can also deploy a blog. Consult this [short book](https://bookdown.org/yihui/blogdown/) on using R Markdown and Hugo.
+
+## Hosting
+
+- [GitHub starting point](https://help.github.com/articles/user-organization-and-project-pages/).
+- [Bitbucket doc](https://confluence.atlassian.com/bitbucket/publishing-a-website-on-bitbucket-cloud-221449776.html).
+- [GitLab doc](https://docs.gitlab.com/ee/user/project/pages/index.html) and [tutorial](https://about.gitlab.com/2016/04/07/gitlab-pages-setup/).
+
+## Icons
+
+We can fetch icons like the ones in the menu from different websites.
+
+- [Font Awesome](http://fontawesome.io/icons/).
+- [ionicons](http://ionicons.com/).
+- [Glyphicons](https://getbootstrap.com/docs/3.3/components/).
+
+Set prefix: e.g., `fa-github`, `ion-social-twitter`, `glyphicon-time`.
+
+## Caching
+
+Enable knitr caching during the development of the site. Rapidly preview changes. Just add the `cache = TRUE` chunk option.
+
+## The `htmltools` package
+
+As an alternative to RStudio, we can generate custom HTML from R code using the `htmltools` package.
+
+## Tables
+
+There are a variety of ways to generate HTML tables, including the `knitr::kable` function (Markdown output) and the `xtable` package (HTML output).
+
+# Books
+
+We can also write [book with R Markdown]( https://bookdown.org/).
+
+---

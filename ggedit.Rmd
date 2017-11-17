@@ -1,0 +1,45 @@
+---
+title: "ggedit"
+---
+
+# The `ggedit` package
+
+The [package](https://github.com/metrumresearchgroup/ggedit) is a `ggplot2` editor. The `ggedit` package is part of RStudio Addins.
+
+# The procedure
+
+We first generate a chart.
+
+```{r}
+library(ggplot2)
+
+p <- ggplot(mtcars, aes(x = hp, y = wt)) + 
+  geom_point() +
+  geom_smooth(linetype=2, size=2, colour='#4876FF')
+
+p
+```
+
+We then clone the original chart `p` and 'ggedit' `p2`. Or we highlight the `ggplot2` plot and launch the addin.
+
+```{r, eval=FALSE}
+p2 <- p
+
+library(ggedit)
+
+p2 <- ggedit(p)
+```
+
+Finally, we presh the 'Done' button and show the updated plot.
+
+```{r, eval=FALSE}
+plot(p2)
+```
+
+More about the object.
+
+```{r, eval=FALSE}
+names(p2)
+```
+
+---

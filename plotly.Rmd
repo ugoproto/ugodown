@@ -1,0 +1,258 @@
+---
+title: "plotly"
+---
+
+# The `plotly` package
+
+Plotly graphing library runs in different languages (Scala, JavaScript, Python, MATLAB). With the R [package](https://plot.ly/r/), we can plot a variety of charts (basic, statistical, scientific, financial, 3D) and maps (with events, choropleths, bubbles, lines, scattermapboxes).
+
+The package runs locally in a web browser or in a RStudio viewer. We can publish charts to the web with Plotly's web service.
+
+- [`plotly` for R master class](https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html)
+- [RDocumentation](https://www.rdocumentation.org/packages/plotly/versions/4.5.2?).
+- The [gallery](https://plot.ly/r/).
+
+# Scatter charts
+
+With the `diamonds` dataset.
+
+```{r}
+suppressPackageStartupMessages(library(plotly))
+
+# The diamonds dataset
+head(diamonds, 3)
+
+plot_ly(diamonds, x = ~carat, y = ~price, color = ~carat, size = ~carat)
+```
+
+## Scatter vs. 2D histogram plots
+
+This an dataset about 753 working women. 428 work outside the home, 325 don't. We remove observations where `hours` is zero. We also have socioeconomic factors affecting the work decision.
+
+The scatter plot only.
+
+```{r, include=FALSE}
+library(readxl)
+
+# Read in the data set and assign to the object
+work <- read_excel('data/Survival.xls', sheet = 'work')
+str(work)
+work$largecity <- as.factor(work$largecity)
+work <- subset(work, work$hours != 0)
+```
+
+```{r}
+plot_ly(work, x = ~faminc, y = ~hours, color = ~largecity, size = ~exper)
+```
+
+The scatter plot vs. the 2D histogram plot.
+
+```{r}
+p <- plot_ly(work, x = ~faminc, y = ~hours)
+
+pp <- subplot(
+  p %>% add_markers(alpha = 0.2),
+  p %>% add_histogram2d()
+)
+
+pp
+```
+
+# Bar charts
+
+With the `diamonds` dataset.
+
+```{r, include=FALSE}
+library(dplyr)
+
+# Calculate the numbers of diamonds for each cut-clarity combination
+diamonds_bucket <- diamonds %>% 
+  count(cut, clarity)
+```
+
+```{r}
+plot_ly(diamonds_bucket, x = ~cut, y = ~n, color = ~clarity, type = "bar")
+```
+
+# Box plots
+
+Create box plots that are grouped, colored, and that display the underlying data distribution.
+
+```{r}
+# The non fancy box plot
+plot_ly(y = ~rnorm(50), type = "box")
+```
+
+```{r, eval=TRUE}
+# The fancy box plot
+plot_ly(diamonds, y = ~price, color = ~cut, type = 'box')
+```
+
+```{r, eval=TRUE}
+# The super fancy box plot
+plot_ly(diamonds, x = ~cut, y = ~price, color = ~clarity, type = 'box') %>%
+  layout(boxmode = "group")
+```
+
+# Getting fancy with charts
+
+## Visualizing volcano data
+
+Mount Eden is a volcano in the Auckland volcanic field. The `volcano` dataset gives topographic information for Mount Eden on a 10m by 10m grid.
+
+One way to look at the topographic data is via a heatmap. The heatmap's color pattern visualizes how the height of the volcano's surface fluctuates within this 10m by 10m grid.
+
+Alternatively, we could visualize the data by making a 3D surface plot.
+
+```{r, include=FALSE}
+# The volcano data
+str(volcano)
+```
+
+```{r}
+# The heatmap
+plot_ly(z = ~volcano, type = 'heatmap')
+
+# The 3D surface map
+plot_ly(z = ~volcano, type = 'surface')
+```
+
+## Interactive `ggplot2`
+
+Convert the `ggplot2` into interactive versions; see [examples](https://plot.ly/ggplot2/).
+
+```{r, eval=TRUE}
+library(ggplot2)
+
+# Create the ggplot2 graph
+ggplot(mtcars, aes(x = wt, y = mpg, col = cyl)) +
+  geom_point()
+
+# Make the plot interactive
+ggplotly()
+```
+
+```{r}
+# Or...
+ggplotly( ggplot(mtcars, aes(x = wt, y = mpg, col = cyl)) +
+  geom_point() )
+```
+
+## Sliding into another example
+
+Visualize the decease on the US roads. Use the 'sliders' to modify the chart.
+
+```{r, eval=FALSE, include=FALSE}
+# Set the working directory to upload the data
+getwd()
+setwd("/home/ugo/Documents/Rprojects/rmarkdown")
+```
+
+```{r, include=FALSE}
+USAccDeaths <- read.csv('data/USAccDeaths.csv')
+#USAccDeaths$date <- as.POSIXct(USAccDeaths$date)
+str(USAccDeaths)
+```
+
+```{r, eval=TRUE}
+# Monthly totals of accidental deaths in the USA
+plot_ly(x = ~USAccDeaths$date, y = ~USAccDeaths$deaths) %>% 
+  add_lines() %>%
+  rangeslider()
+```
+
+Implement a range slider to a stock graph.
+
+```{r, include=FALSE}
+apple_stock_price <- read.csv('data/apple_stock_price.csv')
+#USAccDeaths$Date <- as.POSIXct(USAccDeaths$Date)
+str(apple_stock_price)
+```
+
+```{r, eval=TRUE}
+# Apple Stock Price With Rangeslider
+plot_ly(apple_stock_price, x = ~Date) %>%
+  add_lines(y = ~AAPL.Adjusted, name = "Apple") %>% 
+  rangeslider() %>% 
+  layout(
+    title = "Stock Price Apple",
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Price"))
+```
+
+# Maps
+
+## Interactive US airports
+
+A map provides an easy way to visualize how a measurement varies across a geographic area or the level of variability within a region.
+
+```{r, include=FALSE}
+library(readr)
+
+# 1
+airport_traffic <- read_csv('data/airport_traffic.csv')
+airport_traffic$no <- NULL
+airport_traffic$iata <- as.factor(airport_traffic$iata)
+airport_traffic$airport <- as.factor(airport_traffic$airport)
+airport_traffic$city <- as.factor(airport_traffic$city)
+airport_traffic$state <- as.factor(airport_traffic$state)
+airport_traffic$country <- as.factor(airport_traffic$country)
+
+# 2
+airports <- read_csv('data/airports.csv')
+airports$Timezone <- as.integer(airports$Timezone)
+airports$DST <- as.factor(airports$DST)
+
+str(airport_traffic)
+str(airports)
+```
+
+```{r, eval=TRUE}
+# Most Trafficked US Airports
+g <- list(
+  scope = 'usa',
+  showland = TRUE,
+  landcolor = toRGB("gray95")
+)
+
+plot_geo(airport_traffic, lat = ~lat, lon = ~long) %>%
+  add_markers(text = ~paste(airport,
+                            city,
+                            state,
+                            paste("Arrivals:", cnt),
+                            sep = "<br />"),
+              color = ~cnt,
+              symbol = I("square"),
+              size = I(8),
+              hoverinfo = "text") %>%
+  colorbar(title = "Incoming flights \nFebruary 2011") %>%
+  layout(title = 'Most trafficked US airports \n(Hover for airport)',
+         geo = g)
+```
+
+## Interactive worldwide airports
+
+```{r, eval=TRUE}
+g2 <- list(scope = 'world',
+           showland = TRUE,
+           landcolor = toRGB("gray95"))
+
+plot_geo(airports, lat = ~Latitude, lon = ~Longitude) %>%
+  add_markers(text = ~paste(AirportID, City, Country, sep = "<br />"),
+              color = ~Country,
+              symbol = I("circle"),
+              size = I(3),
+              hoverinfo = "text",
+              colors = "Set1") %>%
+  layout(title = 'Commercial Airports Worldwide',
+         geo = g2)
+```
+
+Let's highlight the most important pieces of the code:
+
+- With the `lat` and `lon` arguments, we provide information regarding the latitude and longitude of the airport's locations.
+- With `add_markers()`, we can add trace(s) to a Plotly visualization.
+- In `geo`, we set the reference between the provided geospatial coordinates and a geographic map (e.g. `usa`)
+- In `layout()`, we modify the layout of a plotly visualization. For example, with title, we tell Plotly what `title` we want to appear above our plot.
+
+---

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "name: \"ugodown\"\noutput_dir: \"docs\"\noutput:\n  html_document:\n    theme: flatly\n    highlight: tango\n    includes:\n      in_header: header.html # for the favicon\n    toc: true\n    toc_float:\n      collapsed: false\n      smooth_scroll: true\n    df_print: paged\nnavbar:\n  title: \"ugodown\"\n  type: inverse #inverse default\n  left:\n    - text: \"Home\"\n      icon: fa-home\n      href: index.html\n    - text: \"Packages\"\n      menu:\n        - text: \"googleVis\"\n          href: googleVis.html\n        - text: \"Python\"\n          href: python.html\n    - text: \"htmlwidgets\"\n      menu:\n        - text: \"htmlwidgets\"\n          href: htmlwidgets.html\n        - text: \"---------\"\n        - text: \"Leaflet\"\n          href: leaflet.html\n        - text: \"Static & interactive maps\"\n          href: static_maps.html\n        - text: \"---------\"\n        - text: \"dygraphs\"\n          href: dygraphs.html\n        - text: \"plotly\"  \n          href: plotly.html\n        - text: \"rbokeh\"\n          href: rbokeh.html\n        - text: \"Highcharters\"\n          href: highcharters.html\n        - text: \"---------\"\n        - text: \"DataTables\"\n          href: datatables.html\n        - text: \"---------\"\n        - text: \"ggedit\"\n          href: ggedit.html\n    - text: \"Shiny\"\n      menu:\n        - text: \"Shiny\"\n          href: shiny.html\n        - text: \"---------\"\n        - text: \"The Sugar Maple\"\n        - text: \"Public Health\"\n    - text: \"Flexdashboard\"\n      menu:\n        - text: \"Flexdashboard\"\n          href: flexdashboard.html\n        - text: \"---------\"\n        - text: \"Board 1\"\n        - text: \"Board 2\"\n    - text: \"Themes\"\n      menu:\n        - text: \"Themes\"\n          href: themes.html\n  right:\n    - icon: fa-github fa-lg\n      href: https://github.com/ugoproto/ugodown",
+    "created" : 1510936679184.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1871928115",
+    "id" : "E23E99C",
+    "lastKnownWriteTime" : 1510936689,
+    "last_content_update" : 1510936689099,
+    "path" : "~/Documents/Rprojects/ugodown/_site.yml",
+    "project_path" : "_site.yml",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "yaml"
+}

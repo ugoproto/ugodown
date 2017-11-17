@@ -1,0 +1,71 @@
+name: "ugodown"
+output_dir: "docs"
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    includes:
+      in_header: header.html # for the favicon
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    df_print: paged
+navbar:
+  title: "ugodown"
+  type: inverse #inverse default
+  left:
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+    - text: "Packages"
+      menu:
+        - text: "googleVis"
+          href: googleVis.html
+        - text: "Python"
+          href: python.html
+    - text: "htmlwidgets"
+      menu:
+        - text: "htmlwidgets"
+          href: htmlwidgets.html
+        - text: "---------"
+        - text: "Leaflet"
+          href: leaflet.html
+        - text: "Static & interactive maps"
+          href: static_maps.html
+        - text: "---------"
+        - text: "dygraphs"
+          href: dygraphs.html
+        - text: "plotly"  
+          href: plotly.html
+        - text: "rbokeh"
+          href: rbokeh.html
+        - text: "Highcharters"
+          href: highcharters.html
+        - text: "---------"
+        - text: "DataTables"
+          href: datatables.html
+        - text: "---------"
+        - text: "ggedit"
+          href: ggedit.html
+    - text: "Shiny"
+      menu:
+        - text: "Shiny"
+          href: shiny.html
+        - text: "---------"
+        - text: "The Sugar Maple"
+        - text: "Public Health"
+    - text: "Flexdashboard"
+      menu:
+        - text: "Flexdashboard"
+          href: flexdashboard.html
+        - text: "---------"
+        - text: "Board 1"
+        - text: "Board 2"
+    - text: "Themes"
+      menu:
+        - text: "Themes"
+          href: themes.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/ugoproto/ugodown

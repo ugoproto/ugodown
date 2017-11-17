@@ -1,0 +1,118 @@
+---
+title: "rbokeh"
+---
+
+# The `rbokeh` package
+
+The [package](http://hafen.github.io/rbokeh/#background) and the Python library [website](http://bokeh.pydata.org/en/latest/). Bokeh graphing library runs in different languages (Python, Scala, Julia, R). We can plot all kinds of charts and some maps: the [gallery](https://bokeh.pydata.org/en/latest/docs/gallery.html).
+
+# A quick example
+
+With the `mtcars` dataset.
+
+```{r}
+library(rbokeh)
+
+z <- lm(dist ~ speed, data = cars)
+
+p <- figure(width = 600, height = 600) %>%
+  ly_points(cars, hover = cars) %>%
+  ly_lines(lowess(cars), legend = "lowess") %>%
+  ly_abline(z, type = 2, legend = "lm")
+p
+```
+
+# Scatter vs. `hexbin` plots
+
+This is a dataset about 753 working women. 428 work outside the home, 325 don't. We remove observations where `hours` is zero. We also have socioeconomic factors affecting the work decision.
+
+```{r, include=FALSE}
+library(readxl)
+
+# Read in the data set and assign to the object
+work <- read_excel('data/Survival.xls', sheet = 'work')
+str(work)
+work$largecity <- as.factor(work$largecity)
+work <- subset(work, work$hours != 0)
+```
+
+```{r}
+p <- figure(width = 600, height = 600) %>%
+  ly_points(faminc, hours, data = work, color = largecity, glyph = largecity,
+    hover = list(faminc, hours, taxableinc, hfathereduc, hmothereduc, kids618, age))
+p
+```
+
+```{r}
+figure(width = 600, height = 600) %>%
+  ly_hexbin(faminc, hours, data = work)
+```
+
+# Maps
+
+`rbokeh` can work with map databases such as `maps` , `mapdata` (and `mapproj`). The only interactions are with the 'events' displayed on the map (points, bubbles, choropleth (fill)). However, for a fully interactive package: `leaflet`.
+
+## Crude map of the world with capital cities
+
+```{r}
+library(maps)
+
+data(world.cities)
+caps <- subset(world.cities, capital == 1)
+caps$population <- prettyNum(caps$pop, big.mark = ",")
+
+figure(width = 800, height = 450, padding_factor = 0) %>%
+  ly_map("world", col = "gray") %>%
+  ly_points(long, lat, data = caps, size = 5, hover = c(name, country.etc, population))
+```
+
+## Maps of Canadian major CMAs
+
+CMA: Census Metropolitan Area.
+
+From `"world", "Canada"`.
+
+```{r}
+library(maps)
+library(mapdata)
+
+data(canada.cities)
+metro <- subset(canada.cities, pop >= 1000000)
+metro$population <- prettyNum(metro$pop, big.mark = ",")
+
+figure(width = 800, height = 450, padding_factor = 0) %>%
+  ly_map("world", "Canada", col = "lightgray") %>%
+  ly_points(long, lat, data = metro, size = 10, color = 'red',
+            hover = c(name, country.etc, population))
+```
+
+From `"worldHires", "Canada"`.
+
+```{r}
+library(maps)
+library(mapdata)
+
+figure(width = 800, height = 450, padding_factor = 0) %>%
+  ly_map("worldHires", "Canada", col = "lightgray") %>%
+  ly_points(long, lat, data = metro, size = 10, color = 'red',
+            hover = c(name, country.etc, population))
+```
+
+## Spatial vectors
+
+the `ly_polygons` function can hangle spatial vectors, but again, `rbokeh` should not be the first choice for plotting maps.
+
+## Google Maps
+
+The distribution of the Joshua Tree (hover of the points to see the pollinator).
+
+```{r}
+bkgd = read.csv('data/JoTrPresence02202008_dryad.csv')
+
+gmap(lat = 35.75, lng = -116.25, zoom = 6, width = 700, height = 600) %>%
+  ly_points(longitude, latitude, data = bkgd, alpha = 0.8, col = "red", hover = c(pollinator, longitude, latitude))
+```
+
+Nothing about OpenStreetMaps.
+
+---

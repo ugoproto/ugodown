@@ -1,0 +1,134 @@
+---
+title: "dygraphs"
+---
+
+# The `dygraphs` package
+
+The [package](http://rstudio.github.io/dygraphs/) and the JavaScript library [website](http://dygraphs.com/).
+
+# A quick example
+
+```{r}
+library(dygraphs)
+
+dygraph(nhtemp, main = "New Haven Temperatures") %>% 
+  dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01"))
+```
+<br>
+
+# `xts`
+
+Datasets must either be time series data or numeric data. For time series, this must be an `xts` object or an object which is convertible to `xts` (such as `zoo`). For numeric data, this must be a named list or data frame, where the first element/column provides x-axis values and all subsequent elements/columns provide one or more series of y-values.
+
+# Quarterly time series
+
+We use the quarterly time series of the number of Australian residents.
+
+```{r}
+head(austres)
+
+library(xts)
+
+# Convert austres into an xts object
+au <- as.xts(austres)
+head(au, 5)
+```
+
+```{r}
+library(dygraphs)
+
+dygraph(au, main = "Number of Australian residents") %>% 
+  dyRangeSelector(dateWindow = c("1972-01-01", "1990-01-01"))
+```
+<br>
+
+# Monthly time series
+
+```{r}
+head(sunspots)
+
+library(xts)
+
+# Convert sunspots to xts
+sunspots_xts <- as.xts(sunspots)
+head(sunspots_xts, 5)
+```
+
+```{r}
+library(dygraphs)
+
+dygraph(sunspots_xts, main = "Sunspots") %>% 
+  dyRangeSelector(dateWindow = c("1800-01-01", "1830-01-01"))
+```
+<br>
+
+# Options
+
+```{r}
+lungDeaths <- cbind(ldeaths, mdeaths, fdeaths)
+
+head(lungDeaths, 3)
+```
+
+## Colors
+
+```{r}
+library(dygraphs)
+
+dygraph(lungDeaths, main = "Deaths from Lung Disease (UK)") %>%
+  dyOptions(colors = c('red', 'blue', 'orange'))
+
+dygraph(lungDeaths, main = "Deaths from Lung Disease (UK)") %>%
+  dyOptions(colors = RColorBrewer::brewer.pal(3, "Set2"))
+
+
+```
+
+## Steps, fill (area), points, size, shape
+
+```{r}
+library(dygraphs)
+
+# Step plots
+dygraph(lungDeaths, main = "Deaths from Lung Disease (UK)") %>%
+  dyOptions(colors = RColorBrewer::brewer.pal(3, "Set2")) %>%
+  dyOptions(stepPlot = TRUE)
+# dyOptions(fillGraph = TRUE, fillAlpha = 0.4)
+# dyOptions(drawPoints = TRUE, pointSize = 2)
+# dyOptions(drawPoints = TRUE, pointSize = 5, pointShape = "triangle")
+# triangle, square, diamond, pentagon, hexagon, circle, star, plus, ex
+
+```
+
+## Mix series
+
+```{r}
+library(dygraphs)
+
+dygraph(lungDeaths, main = "Deaths from Lung Disease (UK)") %>%
+  dySeries("ldeaths", drawPoints = FALSE, color = "red") %>%
+  dySeries("mdeaths", drawPoints = TRUE, color = "blue") %>%
+  dySeries("fdeaths", stepPlot = TRUE, fillGraph = TRUE, color = "orange")
+# dySeries("ldeaths", strokeWidth = 2, strokePattern = "dashed")
+# dyGroup(c("mdeaths", "ldeaths"), drawPoints = TRUE, color = c("blue", "green"))
+```
+
+## More parameters and settings
+
+- Series Highlighting.
+- Axis Options.
+- Labels & legends.
+- Time Zones.
+- Range Selector.
+- Candlestick Charts (Stock Exchanges).
+- Synchronization.
+- Straw Broom Charts (Stock Exchanges).
+- Roll Periods (moving average and smoothing).
+- Annotation/Shading.
+- Events and Limits.
+- Upper and Lower Bars (confidence intervals).
+- Plugins (for interactivity).
+- Custom Plotters.
+- Colored ribbons (for displaying 'regimes').
+
+---

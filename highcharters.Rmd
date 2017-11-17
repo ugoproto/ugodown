@@ -1,0 +1,239 @@
+---
+title: "Highcharter"
+---
+
+# The `highcharter` package
+
+The [package](http://jkunst.com/highcharter/) is free for non-commercial use but requires a license in corporate and government fields. 
+
+We can plot a variety of charts and maps that might not be available with `plotly` and `rbokeh`. More specifically: treemaps, better treatment of time series and stock charts (the related packages and topics such as autocovariance and autocorrelation), survival functions, sparkline charts. The package comes with over 500 themes (The Economist, Financial Times, Google, etc.). We can have motion charts like `plotly`, but also drag points like JavaScript libraries. 
+
+Consult the [demo site](https://www.highcharts.com/demo).
+
+# A quick example
+
+With the `mtcars` dataset.
+
+```{r, include=FALSE}
+library(highcharter)
+
+data(diamonds, mpg, package = "ggplot2")
+```
+
+```{r}
+library(highcharter)
+
+hchart(mpg, "scatter", hcaes(x = displ, y = hwy, group = class))
+```
+
+# Time series and forecasts
+
+With the `AirPassengers` dataset.
+
+```{r}
+library(forecast)
+
+airforecast <- forecast(auto.arima(AirPassengers), level = 95)
+
+library(highcharter)
+
+hchart(airforecast)
+```
+
+Average temperatures in New York City.
+
+```{r}
+library(highcharter)
+data(citytemp)
+
+hc <- highchart() %>% 
+  hc_xAxis(categories = citytemp$month) %>% 
+  hc_add_series(name = "New York", data = citytemp$new_york) %>% 
+  hc_xAxis(title = list(text = "Month"),
+           opposite = TRUE,
+           minorTickInterval = "auto",
+           minorGridLineDashStyle = "LongDashDotDot",
+           plotLines = list(
+             list(label = list(text = "Mid-year"),
+                  color = "#FF0000",
+                  width = 2,
+                  value = 6))) %>% 
+  hc_xAxis(plotBands = list(
+             list(from = 9, to = 12, color = "rgba(100, 0, 0, 0.1)",
+                  label = list(text = "This is a plotBand")))) 
+
+hc
+```
+
+# Treemaps
+
+A federal government budget: revenues and expenses.
+
+```{r, include=FALSE}
+budget <- read.csv('data/CanadaFederalBudget.csv', sep = ';', header = TRUE)
+b_revenues <- subset(budget, budget$RevExp == 'Revenue outlook')
+b_expenses <- subset(budget, budget$RevExp == 'Program expenses outlook')
+```
+
+```{r}
+library(highcharter)
+
+hchart(b_revenues, "treemap", hcaes(x = Details, value = Budget2016, color = Budget2016))
+
+hchart(b_expenses, "treemap", hcaes(x = Details, value = -Budget2016, color = -Budget2016))
+```
+
+# Stock Exchanges
+
+The CAD/USD exchange rate.
+
+```{r}
+suppressPackageStartupMessages(library(quantmod))
+
+x <- getSymbols("CAD/USD", src = "oanda", auto.assign = FALSE)
+
+library(highcharter)
+
+hchart(x)
+```
+
+# Survival analysis
+
+Subscriber churn (deactivation rate) in telecom.
+
+```{r, include=FALSE}
+telco <- read.csv('data/Telco_Customer_Churn.csv', header = TRUE)
+
+# remove the tenure = 0
+summary(telco$tenure)
+dim(telco)
+
+telco2 <- subset(telco, telco$tenure != 0)
+
+# convert Churn
+levels(telco2$Churn) <- c(0, 1)
+telco2$Churn <- as.integer(telco2$Churn)
+telco2$Churn <- telco2$Churn - 1
+```
+
+```{r}
+library(survival)
+
+fit <- survfit(Surv(tenure, Churn) ~ Contract, data = telco2)
+
+library(highcharter)
+
+hchart(fit, ranges = TRUE)
+```
+
+```{r}
+library(survival)
+
+cox_model <- coxph(Surv(tenure, Churn) ~ Contract,
+                   method = 'efron',
+                   data = telco2)
+
+fit_cox_model <- survfit(cox_model)
+
+library(highcharter)
+
+hchart(fit_cox_model, ranges = TRUE)
+```
+
+# Component analysis
+
+```{r, include=FALSE}
+liberty12 <- read.csv('data/liberty12.csv', header = TRUE)
+liberty12 <- na.omit(liberty12)
+rownames(liberty12) <- liberty12[, 1]
+liberty12 <- liberty12[, -1]
+
+fathers <- read.csv2('data/fathers.csv', header = TRUE)
+rownames(fathers) <- fathers[, 1]
+fathers <- fathers[, -1]
+```
+
+Each year, the Heritage Foundation along with the Wall Street Journal releases an Index of Economic Freedom where countries are measured with 12 metrics (12 'freedoms').
+
+Each Freedom metrics are percentages; 100 being the highest value:
+
+1. Property Rights
+1. Judicial Effectiveness
+1. Government Integrity
+1. Tax Burden
+1. Government Spending
+1. Fiscal Health
+1. Business Freedom
+1. Labor Freedom
+1. Monetary Freedom
+1. Trade Freedom
+1. Investment Freedom
+1. Financial Freedom
+
+```{r}
+library(highcharter)
+
+hchart(princomp(liberty12, cor = TRUE))
+```
+
+# Splom
+
+With the `mtcars` dataset.
+
+```{r}
+library(highcharter)
+
+hchart(cor(mtcars))
+```
+
+# Map
+
+A choropleth of North America (region are filled with fake data).
+
+
+```{r, include=FALSE}
+library(dplyr)
+
+mapdata <- get_data_from_map(download_map_data("custom/usa-and-canada"))
+glimpse(mapdata)
+
+set.seed(1234)
+
+data_fake <- mapdata %>% 
+  select(code = `hc-a2`) %>% 
+  mutate(value = 1e5 * abs(rt(nrow(.), df = 10)))
+
+glimpse(data_fake)
+```
+
+```{r}
+library(highcharter)
+
+hcmap("custom/usa-and-canada", 
+      data = data_fake, 
+      value = "value",
+      joinBy = c("hc-a2", "code"), 
+      name = "Fake data",
+      dataLabels = list(enabled = TRUE, format = '{point.name}'),
+      borderColor = "#FAFAFA", borderWidth = 0.1,
+      tooltip = list(valueDecimals = 2, valuePrefix = "$", valueSuffix = " USD")) %>% 
+  hc_mapNavigation(enabled = TRUE) %>% 
+  hc_exporting(enabled = TRUE)
+```
+
+A bubble map with the same fake data.
+
+```{r}
+hcmap("custom/usa-and-canada", 
+      data = data_fake, 
+      type = "mapbubble",
+      value = "value",
+      joinBy = c("hc-a2", "code"), 
+      name = "Fake data",
+      dataLabels = list(enabled = TRUE, format = '{point.name}'),
+      borderColor = "#FAFAFA", borderWidth = 0.1,
+      tooltip = list(valueDecimals = 2, valuePrefix = "$", valueSuffix = " USD")) %>% 
+  hc_mapNavigation(enabled = TRUE) 
+```
+
+---

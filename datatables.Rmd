@@ -1,0 +1,33 @@
+---
+title: "DataTables"
+---
+
+# The `datatables` package
+
+The main function in this [package](http://rstudio.github.io/DT/) is `datatable()`.
+
+# A quick example
+
+With the `iris` dataset.
+
+```{r}
+library(DT)
+
+datatable(iris, options = list(pageLength = 5))
+```
+
+# Getting fancier
+
+We can change the CSS, display row names, customize column names, customize table container, add and customize caption, add column filters, and more.
+
+```{r}
+library(DT)
+
+datatable(head(iris),
+          options = list(pageLength = 5, autoWidth = TRUE),
+          class = 'cell-border stripe', # 'cell-border stripe', 'display', 'compact', 'cell-border'
+          caption = 'Table 1: This is a simple caption for the table.',
+          filter = 'top')
+```
+
+---

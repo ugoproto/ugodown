@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"ugodown\"\n---\n\n```{r, include=FALSE}\nknitr::opts_chunk$set(warning=FALSE, comment=FALSE, calls=FALSE)\n\nsetwd(\"/home/ugo/Documents/Rprojects/ugodown\")\n```\n\n# Static website\n\nA general-purpose (static) [website built with R Markdown](http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_authoring) and the `blogdown` package.\n\n- A prototype; it could also be deployed in Bitbucket or GitLab.\n- A test bench for htmlwidgets and a framework for integrating interactive packages.\n    - It is rather cumbersome to deploy widgets in other websites. \n    - The widgets have to generate an HTML fragments and the later are then embedded into a webpage.\n- A notebook: a vade mecum on random topics.\n\n# Deploying an R Markdown website\n\n![](img/blogdown.png){ width=0.6in align=left hspace=10px }\nWe can learn the [basics](http://rmarkdown.rstudio.com/rmarkdown_websites.html#overview) of the `blogdown` package for developing web content with or without RStudio using R Markdown and publishing it in a static website for free on GitHub, Bitbucket or GitLab. Other hosting services, such as Amazon S3, are super cheap. Here is a complete [list](http://alignedleft.com/resources/cheap-web-hosting). We can also deploy a blog. Consult this [short book](https://bookdown.org/yihui/blogdown/) on using R Markdown and Hugo.\n\n## Hosting\n\n- [GitHub starting point](https://help.github.com/articles/user-organization-and-project-pages/).\n- [Bitbucket doc](https://confluence.atlassian.com/bitbucket/publishing-a-website-on-bitbucket-cloud-221449776.html).\n- [GitLab doc](https://docs.gitlab.com/ee/user/project/pages/index.html) and [tutorial](https://about.gitlab.com/2016/04/07/gitlab-pages-setup/).\n\n## Icons\n\nWe can fetch icons like the ones in the menu from different websites.\n\n- [Font Awesome](http://fontawesome.io/icons/).\n- [ionicons](http://ionicons.com/).\n- [Glyphicons](https://getbootstrap.com/docs/3.3/components/).\n\nSet prefix: e.g., `fa-github`, `ion-social-twitter`, `glyphicon-time`.\n\n## Caching\n\nEnable knitr caching during the development of the site. Rapidly preview changes. Just add the `cache = TRUE` chunk option.\n\n## The `htmltools` package\n\nAs an alternative to RStudio, we can generate custom HTML from R code using the `htmltools` package.\n\n## Tables\n\nThere are a variety of ways to generate HTML tables, including the `knitr::kable` function (Markdown output) and the `xtable` package (HTML output).\n\n# Books\n\nWe can also write [book with R Markdown]( https://bookdown.org/).\n\n---\n",
+    "created" : 1510935442033.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3155154532",
+    "id" : "B3D7D7F7",
+    "lastKnownWriteTime" : 1510936701,
+    "last_content_update" : 1510936701645,
+    "path" : "~/Documents/Rprojects/ugodown/index.Rmd",
+    "project_path" : "index.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

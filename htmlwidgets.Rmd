@@ -1,0 +1,41 @@
+---
+title: "htmlwidgets"
+---
+
+
+# Basics
+
+They provide rich JavaScript data [visualizations](http://www.htmlwidgets.org/). Some are useful, others are gadgets.
+
+We can render [htmlwidgets](http://www.htmlwidgets.org/showcase_leaflet.html) (including Leaflet) in any HTML output. We can publish [R Markdown Websites](http://rmarkdown.rstudio.com/rmarkdown_websites.html#additional_examples) or blogs with [`blogdown`](https://bookdown.org/yihui/blogdown/). We can build a [Flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/). We can publish a book with [`bookdown`](https://bookdown.org/). And so on.
+
+These tools seamlessly integrate interactive [htmlwidgets](http://www.htmlwidgets.org/showcase_leaflet.html) along with static tabulating, charting, and mapping visualizations (and optionally use [Shiny](https://shiny.rstudio.com/) to drive visualizations dynamically).
+
+The widgets that are worth the trip:
+
+- Leaflet (works with Shiny).
+- dygraphs (works with Shiny).
+- plotly (works with Shiny).
+- rbokeh (?).
+- Highcharter (works with Shiny).
+- DataTables (works with Shiny).
+
+In addition, `ggvis` can work with Shiny.
+
+# Supplements
+
+Other [widgets](http://gallery.htmlwidgets.org/) to consider:
+
+- [visNetwork](http://datastorm-open.github.io/visNetwork/); drawing timelines.
+- [networkD3](http://christophergandrud.github.io/networkD3/); drawing dendrograms of different shapes.
+- [leaflet.minicharts](https://github.com/rte-antares-rpackage/leaflet.minicharts); provides functions to add small charts (bar, pie, and polar charts) on interactive maps 
+- [formattable](https://renkun-ken.github.io/formattable/); applying formatting on vectors and data frames (similar to Excel conditional formatting).
+- [`ggiraph`](http://davidgohel.github.io/ggiraph/); an extension to `ggplot2`, making interactive graphics.
+- [`wordcloud2`](https://github.com/lchiffon/wordcloud2).
+- [`tmap`](https://github.com/mtennekes/tmap); an mapping extension to `ggplot2`; maps can become interactive with Leaflet.
+- [Handsontable.js](https://github.com/jrowen/rhandsontable/); drawing sparklines in minimalist Excel-like data grid editor. 
+- [pairsD3](https://github.com/garthtarr/pairsD3); drawing 3D scatterplot matrices or splom.
+- [d3Tree](https://github.com/metrumresearchgroup/d3Tree); drawing collapsible decision trees.
+- [collapsibleTree](https://adeelk93.github.io/collapsibleTree/); drawing collapsible decision trees.
+
+---

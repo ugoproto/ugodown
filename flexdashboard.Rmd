@@ -1,0 +1,7 @@
+---
+title: "Flexdashboard"
+---
+
+IN DEV
+
+We can use the `flexdashboard` [package](http://rmarkdown.rstudio.com/flexdashboard/) to build interactive dashboards (an alternative to HTML reports, presentations or websites).
