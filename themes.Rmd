@@ -1,5 +1,7 @@
 ---
 title: "Themes"
+editor_options: 
+  chunk_output_type: console
 ---
 
 # R Markdown templates
@@ -211,8 +213,6 @@ knitr::kable(mtcars[1:3,])
 ```{r}
 # HTML
 library(tibble)
-
-trunc_mat(mtcars[1:3,])
 
 print(as_tibble(mtcars[1:3,]))
 ```

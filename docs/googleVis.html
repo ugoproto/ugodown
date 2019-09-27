@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,50 +26,98 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <head>
 <link rel="shortcut icon" href="favicon.ico" />
 </head>
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-pre, code { background-color: #f8f8f8; }
-code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code > span.dt { color: #204a87; } /* DataType */
-code > span.dv { color: #0000cf; } /* DecVal */
-code > span.bn { color: #0000cf; } /* BaseN */
-code > span.fl { color: #0000cf; } /* Float */
-code > span.ch { color: #4e9a06; } /* Char */
-code > span.st { color: #4e9a06; } /* String */
-code > span.co { color: #8f5902; font-style: italic; } /* Comment */
-code > span.ot { color: #8f5902; } /* Other */
-code > span.al { color: #ef2929; } /* Alert */
-code > span.fu { color: #000000; } /* Function */
-code > span.er { color: #a40000; font-weight: bold; } /* Error */
-code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #000000; } /* Constant */
-code > span.sc { color: #000000; } /* SpecialChar */
-code > span.vs { color: #4e9a06; } /* VerbatimString */
-code > span.ss { color: #4e9a06; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #000000; } /* Variable */
-code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code > span.ex { } /* Extension */
-code > span.at { color: #c4a000; } /* Attribute */
-code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -104,9 +153,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -120,13 +167,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -142,7 +194,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -162,6 +213,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -183,47 +271,65 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -272,8 +378,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -288,6 +392,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -464,7 +578,7 @@ div.tocify {
 <li>In R, run a demo with <code>demo(googleVis)</code>.</li>
 </ul>
 <p>Always cite the package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">citation</span>(<span class="st">&quot;googleVis&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">citation</span>(<span class="st">&quot;googleVis&quot;</span>)</a></code></pre></div>
 <pre><code>## 
 ## To cite the googleVis package in publications use:
 ## 
@@ -486,81 +600,81 @@ div.tocify {
 ##     url = {https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Gesmann+de~Castillo.pdf},
 ##   }</code></pre>
 <p>Here is an example (converted in png) of the <code>gvisMotionChart</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(googleVis))
-
-M &lt;-<span class="st"> </span><span class="kw">gvisMotionChart</span>(Fruits,
-                     <span class="dt">idvar=</span><span class="st">&#39;Fruit&#39;</span>,
-                     <span class="dt">timevar=</span><span class="st">&#39;Year&#39;</span>,
-                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">400</span>, <span class="dt">height=</span><span class="dv">350</span>))
-
-<span class="kw">plot</span>(M)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(googleVis))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">M &lt;-<span class="st"> </span><span class="kw">gvisMotionChart</span>(Fruits,</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">                     <span class="dt">idvar=</span><span class="st">&#39;Fruit&#39;</span>,</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">                     <span class="dt">timevar=</span><span class="st">&#39;Year&#39;</span>,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">400</span>, <span class="dt">height=</span><span class="dv">350</span>))</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw">plot</span>(M)</a></code></pre></div>
 <p>The results as an image:</p>
 <p><img src="img/M.png" /> <br></p>
 <p>The problem with <code>googleVis</code> motion chart is they only work with Flash players; PC browsers with Flash can render motion charts. Tablets and mobiles phones only render HTML5.</p>
 <p>The next charts and maps are made of HTML, CSS, JavaScript.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Geo &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports, 
-                    <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,
-                    <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,
-                    <span class="dt">sizevar=</span><span class="st">&quot;&quot;</span>, <span class="co"># size of markers</span>
-                    <span class="dt">hovervar=</span><span class="st">&quot;&quot;</span>, <span class="co"># text</span>
-                    <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">projection=</span><span class="st">&quot;kavrayskiy-vii&quot;</span>))
-
-<span class="kw">plot</span>(Geo)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">Geo &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports, </a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">                    <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                    <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">                    <span class="dt">sizevar=</span><span class="st">&quot;&quot;</span>, <span class="co"># size of markers</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">                    <span class="dt">hovervar=</span><span class="st">&quot;&quot;</span>, <span class="co"># text</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">                    <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">projection=</span><span class="st">&quot;kavrayskiy-vii&quot;</span>))</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">plot</span>(Geo)</a></code></pre></div>
 <embed seamless src="img/Geo.html" width="600px" height="400px">
 </embed>
 <p>We can even edit the results in the browser!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Editor &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports, 
-                       <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,
-                       <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,
-                       <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">gvis.editor=</span><span class="st">&#39;Edit me!&#39;</span>))
-
-<span class="kw">Plot</span>(Editor)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">Editor &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports, </a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">                       <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                       <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">                       <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">gvis.editor=</span><span class="st">&#39;Edit me!&#39;</span>))</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">Plot</span>(Editor)</a></code></pre></div>
 <embed seamless src="img/Editor.html" width="700px" height="500px">
 </embed>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Geo2 &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(CityPopularity, 
-                     <span class="dt">locationvar=</span><span class="st">&#39;City&#39;</span>,
-                     <span class="dt">colorvar=</span><span class="st">&#39;Popularity&#39;</span>,
-                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">region=</span><span class="st">&#39;US&#39;</span>,
-                                  <span class="dt">height=</span><span class="dv">350</span>,
-                                  <span class="dt">displayMode=</span><span class="st">&#39;markers&#39;</span>, 
-                                  <span class="dt">colorAxis=</span><span class="st">&quot;{values:[200,400,600,800], colors:[</span><span class="ch">\&#39;</span><span class="st">red&#39;, </span><span class="ch">\&#39;</span><span class="st">pink</span><span class="ch">\&#39;</span><span class="st">, </span><span class="ch">\&#39;</span><span class="st">orange&#39;,</span><span class="ch">\&#39;</span><span class="st">green&#39;]}&quot;</span>))
-
-<span class="kw">Plot</span>(Geo2)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">Geo2 &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(CityPopularity, </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                     <span class="dt">locationvar=</span><span class="st">&#39;City&#39;</span>,</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                     <span class="dt">colorvar=</span><span class="st">&#39;Popularity&#39;</span>,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">region=</span><span class="st">&#39;US&#39;</span>,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">                                  <span class="dt">height=</span><span class="dv">350</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">                                  <span class="dt">displayMode=</span><span class="st">&#39;markers&#39;</span>, </a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">                                  <span class="dt">colorAxis=</span><span class="st">&quot;{values:[200,400,600,800], colors:[</span><span class="ch">\&#39;</span><span class="st">red&#39;, </span><span class="ch">\&#39;</span><span class="st">pink</span><span class="ch">\&#39;</span><span class="st">, </span><span class="ch">\&#39;</span><span class="st">orange&#39;,</span><span class="ch">\&#39;</span><span class="st">green&#39;]}&quot;</span>))</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw">Plot</span>(Geo2)</a></code></pre></div>
 <embed seamless src="img/Geo2.html" width="600px" height="400px">
 </embed>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CityPopularity3 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">City =</span> <span class="kw">c</span>(<span class="st">&#39;Montreal&#39;</span>, <span class="st">&#39;Toronto&#39;</span>),
-                              <span class="dt">Popularity =</span> <span class="kw">c</span>(<span class="dv">700</span>, <span class="dv">200</span>))
-
-Geo3 &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(CityPopularity3, 
-                     <span class="dt">locationvar=</span><span class="st">&#39;City&#39;</span>,
-                     <span class="dt">colorvar=</span><span class="st">&#39;Popularity&#39;</span>,
-                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">region =</span> <span class="st">&#39;CA&#39;</span>,
-                                  <span class="dt">height=</span><span class="dv">350</span>,
-                                  <span class="dt">displayMode=</span><span class="st">&#39;markers&#39;</span>, 
-                                  <span class="dt">colorAxis=</span><span class="st">&quot;{values:[200,400,600,800], colors:[</span><span class="ch">\&#39;</span><span class="st">red&#39;, </span><span class="ch">\&#39;</span><span class="st">pink</span><span class="ch">\&#39;</span><span class="st">, </span><span class="ch">\&#39;</span><span class="st">orange&#39;,</span><span class="ch">\&#39;</span><span class="st">green&#39;]}&quot;</span>))
-
-<span class="kw">Plot</span>(Geo3)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">CityPopularity3 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">City =</span> <span class="kw">c</span>(<span class="st">&#39;Montreal&#39;</span>, <span class="st">&#39;Toronto&#39;</span>),</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                              <span class="dt">Popularity =</span> <span class="kw">c</span>(<span class="dv">700</span>, <span class="dv">200</span>))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">Geo3 &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(CityPopularity3, </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                     <span class="dt">locationvar=</span><span class="st">&#39;City&#39;</span>,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">                     <span class="dt">colorvar=</span><span class="st">&#39;Popularity&#39;</span>,</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">                     <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">region =</span> <span class="st">&#39;CA&#39;</span>,</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">                                  <span class="dt">height=</span><span class="dv">350</span>,</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                                  <span class="dt">displayMode=</span><span class="st">&#39;markers&#39;</span>, </a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">                                  <span class="dt">colorAxis=</span><span class="st">&quot;{values:[200,400,600,800], colors:[</span><span class="ch">\&#39;</span><span class="st">red&#39;, </span><span class="ch">\&#39;</span><span class="st">pink</span><span class="ch">\&#39;</span><span class="st">, </span><span class="ch">\&#39;</span><span class="st">orange&#39;,</span><span class="ch">\&#39;</span><span class="st">green&#39;]}&quot;</span>))</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">Plot</span>(Geo3)</a></code></pre></div>
 <embed seamless src="img/Geo3.html" width="600px" height="400px">
 </embed>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PopTable &lt;-<span class="st"> </span><span class="kw">gvisTable</span>(Population, 
-                      <span class="dt">formats=</span><span class="kw">list</span>(<span class="dt">Population=</span><span class="st">&quot;#,###&quot;</span>,
-                                   <span class="st">&#39;% of World Population&#39;</span>=<span class="st">&#39;#.#%&#39;</span>),
-                      <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">page=</span><span class="st">&#39;enable&#39;</span>))
-
-<span class="kw">Plot</span>(PopTable)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">PopTable &lt;-<span class="st"> </span><span class="kw">gvisTable</span>(Population, </a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">                      <span class="dt">formats=</span><span class="kw">list</span>(<span class="dt">Population=</span><span class="st">&quot;#,###&quot;</span>,</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">                                   <span class="st">&#39;% of World Population&#39;</span>=<span class="st">&#39;#.#%&#39;</span>),</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">                      <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">page=</span><span class="st">&#39;enable&#39;</span>))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw">Plot</span>(PopTable)</a></code></pre></div>
 <embed seamless src="img/PopTable.html" width="600px" height="600px">
 </embed>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">G &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports,
-                  <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,
-                  <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,
-                  <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">300</span>, <span class="dt">height=</span><span class="dv">200</span>))
-
-T &lt;-<span class="st"> </span><span class="kw">gvisTable</span>(Exports,
-               <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">300</span>, <span class="dt">height=</span><span class="dv">370</span>))
-
-GT &lt;-<span class="st"> </span><span class="kw">gvisMerge</span>(G, T, <span class="dt">horizontal=</span><span class="ot">FALSE</span>)
-
-<span class="kw">Plot</span>(GT)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">G &lt;-<span class="st"> </span><span class="kw">gvisGeoChart</span>(Exports,</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">                  <span class="dt">locationvar=</span><span class="st">&quot;Country&quot;</span>,</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">                  <span class="dt">colorvar=</span><span class="st">&quot;Profit&quot;</span>,</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">                  <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">300</span>, <span class="dt">height=</span><span class="dv">200</span>))</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">T &lt;-<span class="st"> </span><span class="kw">gvisTable</span>(Exports,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">               <span class="dt">options=</span><span class="kw">list</span>(<span class="dt">width=</span><span class="dv">300</span>, <span class="dt">height=</span><span class="dv">370</span>))</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">GT &lt;-<span class="st"> </span><span class="kw">gvisMerge</span>(G, T, <span class="dt">horizontal=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">Plot</span>(GT)</a></code></pre></div>
 <embed seamless src="img/GT.html" width="600px" height="600px">
 </embed>
 <hr />
@@ -584,6 +698,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

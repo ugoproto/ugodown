@@ -13,7 +13,7 @@ output:
     df_print: paged
 navbar:
   title: "ugodown"
-  type: inverse #inverse default
+  type: inverse # inverse default
   left:
     - text: "Home"
       icon: fa-home
