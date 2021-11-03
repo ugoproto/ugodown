@@ -2,14 +2,6 @@
 title: "Python"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning=FALSE, comment=FALSE, calls=FALSE)
-```
-
-```{r, include=FALSE}
-setwd("/home/ugo/Documents/Rprojects/ugodown")
-```
-
 # Python in RStudio
 
 The `knitr` package can execute a variety of [language chunks](http://rmarkdown.rstudio.com/authoring_knitr_engines.html#overview):

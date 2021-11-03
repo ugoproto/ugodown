@@ -52,16 +52,10 @@ navbar:
       menu:
         - text: "Shiny"
           href: shiny.html
-        - text: "---------"
-        - text: "The Sugar Maple"
-        - text: "Public Health"
     - text: "Flexdashboard"
       menu:
         - text: "Flexdashboard"
           href: flexdashboard.html
-        - text: "---------"
-        - text: "Board 1"
-        - text: "Board 2"
     - text: "Themes"
       menu:
         - text: "Themes"

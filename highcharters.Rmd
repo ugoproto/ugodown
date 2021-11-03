@@ -103,6 +103,7 @@ Subscriber churn (deactivation rate) in telecom.
 
 ```{r, include=FALSE}
 telco <- read.csv('data/Telco_Customer_Churn.csv', header = TRUE)
+telco$Churn <- as.factor(telco$Churn)
 
 # remove the tenure = 0
 summary(telco$tenure)

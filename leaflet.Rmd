@@ -386,7 +386,7 @@ Let's load a `SpatialPolygonsDataFrame`: the distribution of sugar maple  specie
 ```{r}
 library(rgdal)
 
-acersacr <- readOGR('/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/maple/acersacr.shp', GDAL1_integer64_policy = TRUE)
+acersacr <- readOGR('data/acersacr.shp', GDAL1_integer64_policy = TRUE)
 ```
 
 When the shapefile has layers, we can specify which one with: `layer = "cb_2013_us_state_20m"` for example. We can them subset the shapefile with `neStates <- subset(states, states$STUSPS %in% c("CT","ME","MA","NH","RI","VT","NY","NJ","PA"))`.
@@ -490,7 +490,7 @@ Let's run an example to show the size per county in the state of NY. The larger 
 ```{r}
 library(rgdal)
 
-xy <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/gz_2010_us_050_00_500k.json")
+xy <- readOGR("data/gz_2010_us_050_00_500k.json")
 names(xy)
 head(xy@data)
 
@@ -639,7 +639,7 @@ pal(c(1,6,9))
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 library(leaflet)
 
@@ -669,7 +669,7 @@ map %>%
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 library(leaflet)
 
@@ -688,7 +688,7 @@ map %>%
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 qpal <- colorQuantile("Blues", countries$gdp_md_est, n = 7)
 
@@ -708,7 +708,7 @@ If the palette contains the same number of elements as there are factor levels, 
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 # Make up some 5 random levels
 countries$category <- factor(sample.int(5L, nrow(countries), TRUE))
@@ -729,7 +729,7 @@ leaflet(countries, options = leafletOptions(minZoom = 1)) %>%
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 library(leaflet)
 
@@ -744,7 +744,7 @@ Use the `addLegend` function to add a legend.
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 # Continuous input, continuous colours
 pal <- colorNumeric(
@@ -769,7 +769,7 @@ map %>%
 ```{r}
 library(rgdal)
 
-countries <- readOGR("/home/ugo/Documents/Rprojects/DataScienceBookV3/Map Mashup/json/countries.geojson")
+countries <- readOGR("data/countries.geojson")
 
 # Continuous input, discrete colors
 qpal <- colorQuantile("RdYlBu", countries$gdp_md_est, n = 5)

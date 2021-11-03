@@ -42,13 +42,6 @@ We start with these [tutorials](http://shiny.rstudio.com/tutorial/), find other 
 |:---:|:---:|:---:|
 | ![](img/learning_shiny.png){ width=1.5in } | ![](img/learn_ggplot2.jpg){ width=1.5in } | ![](img/web_applications.jpg){ width=1.5in } |
 
-# Cases (in dev)
-
-To do:
-
-- The Sugar Maple.
-- Public Health.
-
 ---
 
 This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 

@@ -5,7 +5,7 @@ title: "ugodown"
 ```{r, include=FALSE}
 knitr::opts_chunk$set(warning=FALSE, comment=FALSE, calls=FALSE)
 
-setwd("/home/ugo/Documents/Rprojects/ugodown")
+setwd("/home/ugo/Documents/Projets_TI_R/ugodown_github")
 ```
 
 # Static website
